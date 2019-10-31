@@ -1,0 +1,41 @@
+function [FD] = PTPSA(img)
+
+%
+% [FD] = PTPSA(img)
+%
+% img : fragmento de imagem que tera a FD calculada (deve ter lados iguais de tamanho 2n)
+% FD : dimensao fractal
+%
+% Calcula dimensao fractal (FD) pelo algoritmo
+% Piecewise-Triangular-Prism-Surface-Area
+%
+
+[r c N] = size(img);
+
+A = img(1,1);
+B = img(r,1);
+C = img(1,c);
+D = img(r,c);
+
+h = (A+B+C+D)/4;
+
+%S1
+a1 = sqrt((A-B)^2 + r^2);
+b1 = sqrt((A-h)^2 + 0.5*r^2);
+c1 = sqrt((B-h)^2 + 0.5*r^2);
+l1 = (a1+b1+c1)/2;
+S1 = sqrt(l1*(l1-a1)*(l1-b1)*(l1-c1));
+
+%S1
+a1 = sqrt((A-B)^2 + r^2);
+b1 = sqrt((A-h)^2 + 0.5*r^2);
+c1 = sqrt((B-h)^2 + 0.5*r^2);
+l1 = (a1+b1+c1)/2;
+S1 = sqrt(l1*(l1-a1)*(l1-b1)*(l1-c1));
+
+
+
+
+
+
+

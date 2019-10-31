@@ -1,0 +1,96 @@
+function segmentacao_match_percent2e3v2(pacientes)
+
+%
+% Calcula eficiencia da segmentacao utilizando a metrica descrita em:
+% "Statistical Structure Analysis in MRI Brain Tumor Segmentation" - Xiao
+% Xuan, Qingmin Liao
+%
+
+
+dir_root = '/home/maryana/LSI/Mestrado/mestrado.maryana/implementacao/';
+
+texto_PA = '';
+texto_TC = '';
+
+nome_arquivo_txt_PA = ('/home/maryana/LSI/Mestrado/mestrado.maryana/implementacao/PA-tabela.csv');
+nome_arquivo_txt_TC = ('/home/maryana/LSI/Mestrado/mestrado.maryana/implementacao/TC-tabela.csv');
+arquivo_PA = fopen(nome_arquivo_txt_PA,'w');
+arquivo_TC = fopen(nome_arquivo_txt_TC,'w');
+
+for p=pacientes
+    
+    paciente = strcat('paciente',int2str(p));
+    dir_mascaras = strcat(dir_root,paciente,'/mascaras/');    
+    dir_resultados = strcat(dir_root,paciente,'/resultado/');   
+    
+    
+    fprintf('Processando resultados do %s...\n',paciente);
+    
+    texto_PA = sprintf('paciente && fatia && PA me')
+    
+    for s=1:3
+        
+        nome_mask1 = strcat(dir_mascaras,paciente,'_mask1_',int2str(s),'_2class.bmp');
+        nome_mask2 = strcat(dir_mascaras,paciente,'_mask2_',int2str(s),'_2class.bmp');
+        nome_result_pos1 = strcat(dir_resultados,paciente,'_saida_',int2str(s),'_medico1_tumor_posprocessado.bmp');
+        nome_result_pos2 = strcat(dir_resultados,paciente,'_saida_',int2str(s),'_medico2_tumor_posprocessado.bmp');
+        
+        %carrega mascara
+        mask1 = imread(nome_mask1);
+        mask1 = mask1(:,:,1);
+        mask1(mask1 == 255) = 0; %so deixa pixeis de tumor na mascara
+        
+        mask2 = imread(nome_mask2);
+        mask2 = mask2(:,:,1);
+        mask2(mask2 == 255) = 0; %so deixa pixeis de tumor na mascara
+
+        
+        %carrega segmentacao posprocessada
+        img_pos1 = imread(nome_result_pos1);
+        img_pos1 = img_pos1(:,:,1);
+        
+        img_pos2 = imread(nome_result_pos2);
+        img_pos2 = img_pos2(:,:,1);
+        
+        %medico 1        
+        %pega pixeis do padrao ouro do tumor
+        PO1 = find(mask1 ~= 0);
+        nPO1 = length(PO1);
+
+        PV_pos1 = intersect(find(img_pos1 ~= 0), PO1);
+        FP_pos1 = intersect(find(mask1 == 0),find(img_pos1 ~= 0));        
+        
+        nPV_pos1 = length(PV_pos1);
+        nFP_pos1 = length(FP_pos1);        
+        
+        PA_pos1 = (nPV_pos1/nPO1)*100;
+        TC_pos1 = (nPV_pos1-0.5*nFP_pos1)/nPO1;        
+        
+        %medico 2        
+        %pega pixeis do padrao ouro do tumor
+        PO2 = find(mask2 ~= 0);
+        nPO2 = length(PO2);
+
+        PV_pos2 = intersect(find(img_pos2 ~= 0), PO2);
+        FP_pos2 = intersect(find(mask2 == 0),find(img_pos2 ~= 0));        
+        
+        nPV_pos2 = length(PV_pos2);
+        nFP_pos2 = length(FP_pos2);        
+        
+        PA_pos2 = (nPV_pos2/nPO2)*100;
+        TC_pos2 = (nPV_pos2-0.5*nFP_pos2)/nPO2;
+        
+        %concatena strings
+        tmp1 = sprintf('&& %d & %d & %g & %g & %g\n',p,s,PA_pos1,PA_pos2,(PA_pos1+PA_pos2)/2);
+        texto_PA = strcat(texto_PA,tmp1);
+        
+        tmp1 = sprintf('&& %d & %d & %g & %g & %g\n',p,s,TC_pos1,TC_pos2,(TC_pos1+TC_pos2)/2);
+        texto_TC = strcat(texto_TC,tmp1);
+        
+    end        
+end
+fprintf(arquivo_PA,'%s',texto_PA);
+fprintf(arquivo_TC,'%s',texto_TC);
+
+fclose(arquivo_PA);
+fclose(arquivo_TC);

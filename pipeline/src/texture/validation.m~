@@ -1,0 +1,55 @@
+function [r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10] = validation()
+
+img = imread('florg.jpg');
+
+
+r0 = ones(size(img));
+r1 = ones(size(img));
+r2 = ones(size(img));
+r3 = ones(size(img));
+r4 = ones(size(img));
+r5 = ones(size(img));
+r6 = ones(size(img));
+r7 = ones(size(img));
+r8 = ones(size(img));
+r9 = ones(size(img));
+r10 = ones(size(img));
+
+        
+for r = 5:251
+    for c = 5:335
+        w = getwindow2(r,c,img,9);
+        ccm = graycomatrix(w,'Offset',[0 1],'Symmetric',true);
+        ccm_n = normalize_ccm(ccm,0,1);
+        %ccm_n = ccm;
+        
+        r0(r,c) = grayccmfeatures(ccm_n,'ASM'); 
+        r1(r,c) = grayccmfeatures(ccm_n,'contrst');
+        r1(r,c) = grayccmfeatures(ccm_n,'variance');
+        r1(r,c) = grayccmfeatures(ccm_n,'variance');
+        r2(r,c) = grayccmfeatures(ccm_n,'IDM');
+        r3(r,c) = grayccmfeatures(ccm_n,'sum_average');
+        r4(r,c) = grayccmfeatures(ccm_n,'sum_variance');
+        r5(r,c) = grayccmfeatures(ccm_n,'sum_entropy');
+        r6(r,c) = grayccmfeatures(ccm_n,'entropy');
+        r7(r,c) = grayccmfeatures(ccm_n,'diff_variance');
+        r8(r,c) = grayccmfeatures(ccm_n,'diff_entropy');
+        r9(r,c) = grayccmfeatures(ccm_n,'IMC1');
+        r10(r,c) = grayccmfeatures(ccm_n,'IMC2');
+        
+    end
+end
+
+%imwrite(gscale(r1),'ASM_0.bmp','BMP');
+%imwrite(gscale(r1),'variance_0.bmp','BMP');
+%imwrite(gscale(r2),'IDM_0.bmp','BMP');
+%imwrite(gscale(r3),'sum_average_0.bmp','BMP');
+%imwrite(gscale(r4),'sum_variance_0.bmp','BMP');
+%imwrite(gscale(r5),'sum_entropy_0.bmp','BMP');
+%imwrite(gscale(r6),'entropy_0.bmp','BMP');
+%imwrite(gscale(r7),'diff_variance_0.bmp','BMP');
+%imwrite(gscale(r8),'diff_entropy_0.bmp','BMP');
+%imwrite(gscale(r9),'IMC1_0.bmp','BMP');
+%imwrite(gscale(r10),'IMC2_0.bmp','BMP');
+
+        

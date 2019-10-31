@@ -1,0 +1,13 @@
+function segmentacao_v_fold(features)
+
+p = 0:10;
+
+percent = 0.999999;
+
+for medico=1:2
+    for paciente=0:10
+        pacientes = find(p ~= paciente);
+        model = segmentacao_treina_svm(pacientes,features,percent,medico);
+        segmentacao_testa_svm(model,paciente,features,medico);
+    end
+end

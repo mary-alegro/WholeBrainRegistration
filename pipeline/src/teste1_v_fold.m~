@@ -1,0 +1,28 @@
+function teste1_v_fold
+
+%paciente3
+model = teste1_treina_svm([0:2 4:10]);
+teste1_testa_svm(model,3)
+
+%paciente4
+model = teste1_treina_svm([0:3 5:10]);
+teste1_testa_svm(model,4)
+
+
+model = teste1_treina_svm([0:4 6:10]);
+teste1_testa_svm(model,5)
+
+model = teste1_treina_svm([0:5 7:10]);
+teste1_testa_svm(model,6)
+
+model = teste1_treina_svm([0:6 8:10]);
+teste1_testa_svm(model,7)
+
+model = teste1_treina_svm([0:7 9:10]);
+teste1_testa_svm(model,8)
+
+model = teste1_treina_svm([0:8 10]);
+teste1_testa_svm(model,9)
+
+model = teste1_treina_svm([0:9]);
+teste1_testa_svm(model,10)

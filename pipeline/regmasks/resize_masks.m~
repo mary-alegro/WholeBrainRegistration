@@ -1,0 +1,16 @@
+function resize_masks()
+
+%
+% Applies LTA transform to the binary masks
+%
+
+mask_dir = '/home/maryana/Posdoc/Brains/Masks_AC/orig/';
+%lta_dir = '/home/maryana/Posdoc/Brains/Case01/histology/reg1/';
+%reg2D_dir = '/home/maryana/Posdoc/Brains/Masks_AC/reg2D/';
+
+files = dir(strcat(mask_dir,'*.tif'));
+nFiles = length(files);
+
+
+
+

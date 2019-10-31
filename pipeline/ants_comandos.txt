@@ -1,0 +1,14 @@
+
+
+Caso 1
+
+WarpImageMultiTransform 3 histo_masks.nii ants_histo_masks.nii -R /Users/LIM44/Desktop/maryana.alegro/Brains/Case01/mri/VBM_6min_SENSE_VBM_6min_601/mri_nucorrect_brain_interp_hw_0.33.nii.gz \
+/Users/LIM44/Desktop/maryana.alegro/Brains/Case01/histology/intnorm2/volume/ants_histo2mri_interp_hw_0.33Warpxvec.nii \
+/Users/LIM44/Desktop/maryana.alegro/Brains/Case01/histology/intnorm2/volume/ants_histo2mri_interp_hw_0.33Warpyvec.nii \
+/Users/LIM44/Desktop/maryana.alegro/Brains/Case01/histology/intnorm2/volume/ants_histo2mri_interp_hw_0.33Warpzvec.nii \
+/Users/LIM44/Desktop/maryana.alegro/Brains/Case01/histology/intnorm2/volume/ants_histo2mri_interp_hw_0.33Affine.txt
+
+
+Caso 4
+
+antsApplyTransforms -d 3 -i histo_masks.nii  -r /Users/LIM44/Desktop/maryana.alegro/Brains/Case04/mri/MM_VBM_6min_401/mri_nucorrect_brain_030303.nii.gz -n linear -t /Users/LIM44/Desktop/maryana.alegro/Brains/Case04/histology/intnormreg/volume/ants_histo2mri_0303031Warp.nii.gz -t /Users/LIM44/Desktop/maryana.alegro/Brains/Case04/histology/intnormreg/volume/ants_histo2mri_0303030GenericAffine.mat -o ants_histo_masks.nii 

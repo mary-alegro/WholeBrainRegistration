@@ -1,0 +1,449 @@
+function [result] = grayccmfeatures(p,feature)
+%
+%INPUT:
+%
+% P normalized co-ocurrence matrix
+% FEATURE the name of the feature to be calculated
+%
+%         String                   Function
+%  -------------------------------------------------
+%       'ASM'
+%       'contrast'
+%       'correlation'
+%       'variance'
+%          or
+%       'sun_squares'
+%       'sum_average'
+%       'sum_variance'
+%       'sum_entropy'
+%       'entropy'
+%       'diff_variance'
+%       'diff_entropy'
+%       'IMC1'
+%       'IMC2'
+%       'MCC'
+%
+
+switch feature
+    case 'ASM'
+        result = ASM(p);
+    case 'contrast'
+        result = contrast(p);
+    case 'correlation'
+        result = correlation(p);
+    case {'variance','sun_squares'}
+        result = sum_squares(p);
+    case 'IDM'
+        result = inverse_diff_moment(p);
+    case 'sum_average'
+        result = sum_average(p);
+    case 'sum_variance'
+        result = sum_variance(p);
+    case 'sum_entropy'
+        result = sum_entropy(p);
+    case 'entropy'
+        result = entropy_ccm(p);
+    case 'diff_variance'
+        result = diff_variance(p);
+    case 'diff_entropy'
+        result = diff_entropy(p);
+    case 'IMC1'
+        result = IMC1(p);
+    case 'IMC2'
+        result = IMC2(p);
+    case 'MCC'
+        result = MCC(p);
+    otherwise
+        error('Unknown option');
+end
+
+
+%----------------------------------------------%
+%----------------------------------------------%
+
+function [f1] = ASM(p)
+% ASM calculates the ANGULAR SECOND MOMENT of the normalized co-ocurrencce
+% matrix P
+%
+% F1 = ASM(P)
+%
+% INPUT:
+% P co-ocurrence matrix
+%
+% OUTPUT:
+% F1 ASM value
+
+f1 = sum(sum(p.^2));
+
+%----------------------------------------------%
+
+function [f2] = contrast(p)
+% CONTRAST calculates the CONTRAST of the normalized co-ocurrencce
+% matrix P
+%
+% F2 = CONTRAST(P)
+%
+% INPUT:
+% P co-ocurrence matrix
+%
+% OUTPUT:
+% F2 contrast value of P
+
+Ng = size(p,1);
+f2 = 0;
+for n = 0:Ng-1
+    s = 0;
+    for i = 1:Ng
+        for j = 1:Ng
+            if abs(i-j) == n
+                s = s + p(j,i);
+            end
+        end
+    end
+    f2 = f2 + (n^2)*s;
+end
+    
+%----------------------------------------------%
+
+function [f3] = correlation(p)
+% CORRELATION calculates the CORRELATION of the normalized co-ocurrencce
+% matrix P
+%
+% F3 = CORRELATION(P)
+%
+% INPUT:
+% P co-ocurrence matrix
+%
+% OUTPUT:
+% F3 correlation value of P
+
+Ng = size(p,1);
+
+px = [1:Ng];
+py = [1:Ng];
+
+for t = 1:Ng
+    px(t) = marginal_prob_x(t,p);
+end
+
+for w = 1:Ng
+    py(w) = marginal_prob_y(w,p);
+end
+
+mx = mean(px);
+ox = std(px);
+my = mean(py);
+oy = std(py);
+f3 = 0;
+
+for i = 1:Ng
+    for j = 1:Ng
+        f3 = f3 + [(i*j)*p(j,i) - mx*my];
+    end
+end
+f3 = f3/(ox*oy);
+
+%----------------------------------------------%
+
+function [f4] = sum_squares(p)
+% SUM_SQUARES calculates the VARIANCE of the normalized co-ocurrencce
+% matrix P
+%
+% F4 = SUM_SQUARES(P,MI)
+%
+% INPUT:
+% P co-ocurrence matrix
+% MI mean grey level (according to gray-level scaling used in CCM caculation)
+%
+% OUTPUT:
+% F4 variance value of P
+
+Ng = size(p,1);
+mi = mean([1:Ng]);
+f4 = 0;
+
+for i = 1:Ng
+    for j = 1: Ng
+       f4 = f4 + (i-mi)^2 * p(j,i);
+    end
+end
+
+%----------------------------------------------%
+
+function [f5] = inverse_diff_moment(p)
+% INVERSE_DIFF_MOMENT calculates the INVERSE DIFFERENCE MOMENT of the normalized co-ocurrencce
+% matrix P
+%
+% F5 = INVERSE_DIFF_MOMENT(P)
+%
+% INPUT:
+% P co-ocurrence matrix
+%
+% OUTPUT:
+% F5 inverse difference moment value of P
+
+Ng = size(p,1);
+f5 = 0;
+
+for i = 1:Ng
+    for j = 1:Ng
+        f5 = f5 + (1/(1 + (i-j)^2))*p(j,i);
+    end
+end
+
+%----------------------------------------------%
+
+function [f6] = sum_average(p)
+% SUM_AVERAGE calculates the SUM AVERAGE of the normalized co-ocurrencce
+% matrix P
+%
+% F6 = SUM_AVERAGE(P)
+%
+% INPUT:
+% P co-ocurrence matrix
+%
+% OUTPUT:
+% F6 sum average moment value of P
+
+Ng = size(p,1);
+f6 = 0;
+
+for i = 2:2*Ng
+    f6 = f6 + i*sum_prob_xy(i,p);
+end
+    
+%----------------------------------------------%
+
+function [f7] = sum_variance(p)
+% SUM_VARIANCE calculates the SUM VARIANCE of the normalized co-ocurrencce
+% matrix P
+%
+% F7 = SUM_VARIANCE(P)
+%
+% INPUT:
+% P co-ocurrence matrix
+%
+% OUTPUT:
+% F7 sum variance value of P
+
+Ng = size(p,1);
+
+f8 = sum_entropy(p);
+f7 = 0;
+
+for i = 2:2*Ng    
+    f7 = f7 + (i-f8)^2 * sum_prob_xy(i,p);
+end
+
+%----------------------------------------------%
+
+function [f8] = sum_entropy(p)
+% SUM_ENTROPY calculates the SUM ENTROPY of the normalized co-ocurrencce
+% matrix P
+%
+% F8 = SUM_ENTROPY(P)
+%
+% INPUT:
+% P co-ocurrence matrix
+%
+% OUTPUT:
+% F8 sum entropy value of P
+
+Ng = size(p,1);
+c = 0.00000001;
+f8 = 0;
+
+for i = 2:2*Ng
+    pxy = sum_prob_xy(i,p);
+    f8 = f8 + pxy * log10(pxy + c);
+end
+
+f8 = -f8;
+
+%----------------------------------------------%
+
+function [f9] = entropy_ccm(p)
+% ENTROPY_CCM calculates the ENTROPY of the normalized co-ocurrencce
+% matrix P
+%
+% F9 = ENTROPY_CCM(P)
+%
+% INPUT:
+% P co-ocurrence matrix
+%
+% OUTPUT:
+% F9 entropy value of P
+
+Ng = size(p,1);
+c = 0.00000001;
+f9 = 0;
+
+for i = 1:Ng
+    for j = 1:Ng
+        f9 = f9 + p(j,i) * log10(p(j,i)+c);
+    end
+end
+
+f9 = -f9;
+
+%----------------------------------------------%
+
+function [f10] = diff_variance(p)
+% DIFF_VARIANCE calculates the DIFFERENCE VARIANCE of the normalized co-ocurrencce
+% matrix P
+%
+% F10 = DIFF_VARIANCE(P)
+%
+% INPUT:
+% P co-ocurrence matrix
+%
+% OUTPUT:
+% F10 difference variance value of P
+
+Ng = size(p,1);
+
+f8 = sum_entropy(p);
+f10 = 0;
+
+for i = 0:Ng - 1   
+    f10 = f10 + (i-f8)^2 * diff_prob_xy(i,p);
+end
+
+%----------------------------------------------%
+
+function [f11] = diff_entropy(p)
+% DIFF_ENTROPY calculates the DIFFERENCE ENTROPY of the normalized co-ocurrencce
+% matrix P
+%
+% F11 = DIFF_ENTROPY(P)
+%
+% INPUT:
+% P co-ocurrence matrix
+%
+% OUTPUT:
+% F11 difference entropy value of P
+
+Ng = size(p,1);
+c = 0.00000001;
+f11 = 0;
+
+for i = 0:Ng-1
+    pxy = diff_prob_xy(i,p);
+    f11 = f11 + pxy * log10(pxy + c);
+end
+
+f11 = -f11;
+
+%----------------------------------------------%
+
+function [f12] = IMC1(p)
+% IMC1 calculates the first INFORMATION MEASURE OF CORRELATION feature of the normalized co-ocurrencce
+% matrix P
+%
+% F12 = IMC1(P)
+%
+% INPUT:
+% P co-ocurrence matrix
+%
+% OUTPUT:
+% F12 first IMC feature value of P
+
+f12 = (entropy_ccm(p) - HXY1(p))/max([HX(p) HY(p)]);
+
+%----------------------------------------------%
+
+function [f13] = IMC2(p)
+% IMC2 calculates the second INFORMATION MEASURE OF CORRELATION feature of the normalized co-ocurrencce
+% matrix P
+%
+% F13 = INVERSE_DIFF_MOMENT(P)
+%
+% INPUT:
+% P co-ocurrence matrix
+%
+% OUTPUT:
+% F13 second IMC feature value of P
+
+f13 = sqrt(1 - exp(-2*(HXY2(p) - entropy_ccm(p))));
+
+%----------------------------------------------%
+
+function [f14] = MCC(p) %TODO: terminar
+% MCC calculates the MAXIMAL CORRELATION COEFFICIENT of the normalized co-ocurrencce
+% matrix P
+%
+% F14 = MCC(P)
+%
+% INPUT:
+% P co-ocurrence matrix
+%
+% OUTPUT:
+% F14 maximal correlation coefficient value of P
+
+
+%----------------------------------------------%
+%----------------------------------------------%
+%----------------------------------------------%
+
+
+function [hxy1] = HXY1(p)
+
+Ng = size(p,1);
+c = 0.00000001;
+hxy1 = 0;
+
+for i = 1:Ng
+    for j = 1:Ng
+        hxy1 = hxy1 + p(j,i) * log(marginal_prob_x(i,p)*marginal_prob_y(j,p) + c);
+    end
+end
+
+hxy1 = -hxy1;
+
+%----------------------------------------------%
+
+function [hxy2] = HXY2(p)
+
+Ng = size(p,1);
+c = 0.00000001;
+hxy2 = 0;
+
+for i = 1:Ng
+    for j = 1:Ng
+        px = marginal_prob_x(i,p);
+        py = marginal_prob_y(j,p);
+        hxy2 = hxy2 + (px*py) * log(px*py + c);
+    end
+end
+
+hxy2 = -hxy2;
+
+%----------------------------------------------%
+
+function [hx] = HX(p)
+
+Ng = size(p,1);
+c = 0.00000001;
+hx = 0;
+
+for i = 1:Ng
+    px = marginal_prob_x(i,p);
+    hx = hx + px * log10(px + c);
+end
+
+hx = -hx;
+
+%----------------------------------------------%
+
+function [hy] = HY(p)
+
+Ng = size(p,1);
+c = 0.00000001;
+hy = 0;
+
+for j = 1:Ng
+    py = marginal_prob_y(j,p);
+    hy = hy + py * log10(py + c);
+end
+
+hy = -hy;

@@ -1,0 +1,143 @@
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/mestrado.maryana/!svn/ver/1/implementacao/texture
+END
+grayccmfeatures.m
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/mestrado.maryana/!svn/ver/1/implementacao/texture/grayccmfeatures.m
+END
+sum_entropy_0.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/mestrado.maryana/!svn/ver/16/implementacao/texture/sum_entropy_0.bmp
+END
+variance_0.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/mestrado.maryana/!svn/ver/16/implementacao/texture/variance_0.bmp
+END
+diff_entropy_0.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/mestrado.maryana/!svn/ver/16/implementacao/texture/diff_entropy_0.bmp
+END
+validation.m
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/mestrado.maryana/!svn/ver/1/implementacao/texture/validation.m
+END
+teste_mri.m
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/mestrado.maryana/!svn/ver/17/implementacao/texture/teste_mri.m
+END
+florg.jpg
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/mestrado.maryana/!svn/ver/16/implementacao/texture/florg.jpg
+END
+mri.dcm
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/mestrado.maryana/!svn/ver/1/implementacao/texture/mri.dcm
+END
+contrast_0.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/mestrado.maryana/!svn/ver/16/implementacao/texture/contrast_0.bmp
+END
+sum_average_0.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/mestrado.maryana/!svn/ver/16/implementacao/texture/sum_average_0.bmp
+END
+entropy_0.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/mestrado.maryana/!svn/ver/16/implementacao/texture/entropy_0.bmp
+END
+marginal_prob_x.m
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/mestrado.maryana/!svn/ver/1/implementacao/texture/marginal_prob_x.m
+END
+marginal_prob_y.m
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/mestrado.maryana/!svn/ver/1/implementacao/texture/marginal_prob_y.m
+END
+sum_prob_xy.m
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/mestrado.maryana/!svn/ver/1/implementacao/texture/sum_prob_xy.m
+END
+IDM_0.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/mestrado.maryana/!svn/ver/16/implementacao/texture/IDM_0.bmp
+END
+diff_prob_xy.m
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/mestrado.maryana/!svn/ver/1/implementacao/texture/diff_prob_xy.m
+END
+cooccurrence.m
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/mestrado.maryana/!svn/ver/1/implementacao/texture/cooccurrence.m
+END
+sum_variance_0.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/mestrado.maryana/!svn/ver/16/implementacao/texture/sum_variance_0.bmp
+END
+haralick.m
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/mestrado.maryana/!svn/ver/1/implementacao/texture/haralick.m
+END
+ASM_0.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/mestrado.maryana/!svn/ver/16/implementacao/texture/ASM_0.bmp
+END
+diff_variance_0.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/mestrado.maryana/!svn/ver/16/implementacao/texture/diff_variance_0.bmp
+END
+correlation_0.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/mestrado.maryana/!svn/ver/16/implementacao/texture/correlation_0.bmp
+END
+normalize_ccm.m
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/mestrado.maryana/!svn/ver/1/implementacao/texture/normalize_ccm.m
+END
